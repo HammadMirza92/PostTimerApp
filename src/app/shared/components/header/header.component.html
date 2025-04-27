@@ -1,0 +1,66 @@
+<mat-toolbar color="primary" class="app-header">
+  <div class="container">
+    <div class="logo-container">
+      <a routerLink="/" class="logo">
+        <img src="assets/images/logo.png" alt="Facebook Timer Posts" height="40">
+        <span class="logo-text">Facebook Timer Posts</span>
+      </a>
+    </div>
+
+    <div class="spacer"></div>
+
+    <div class="nav-links">
+      <ng-container *ngIf="(currentUser$ | async) as user; else loginLinks">
+        <button mat-button [matMenuTriggerFor]="menu">
+          <mat-icon>dashboard</mat-icon>
+          Dashboard
+        </button>
+        <mat-menu #menu="matMenu">
+          <a mat-menu-item routerLink="/facebook-pages">
+            <mat-icon>pages</mat-icon>
+            <span>Facebook Pages</span>
+          </a>
+          <a mat-menu-item routerLink="/posts">
+            <mat-icon>post_add</mat-icon>
+            <span>Posts</span>
+          </a>
+          <a mat-menu-item routerLink="/templates">
+            <mat-icon>design_services</mat-icon>
+            <span>Templates</span>
+          </a>
+        </mat-menu>
+
+        <button mat-button [matMenuTriggerFor]="userMenu">
+          <mat-icon>account_circle</mat-icon>
+          {{ user.firstName }}
+        </button>
+        <mat-menu #userMenu="matMenu">
+          <a mat-menu-item routerLink="/subscriptions">
+            <mat-icon>card_membership</mat-icon>
+            <span>My Subscription</span>
+          </a>
+          <button mat-menu-item (click)="logout()">
+            <mat-icon>exit_to_app</mat-icon>
+            <span>Logout</span>
+          </button>
+        </mat-menu>
+      </ng-container>
+
+      <ng-template #loginLinks>
+        <a mat-button routerLink="/auth/login">
+          <mat-icon>login</mat-icon>
+          Login
+        </a>
+        <a mat-raised-button color="accent" routerLink="/auth/register">
+          <mat-icon>person_add</mat-icon>
+          Register
+        </a>
+      </ng-template>
+    </div>
+  </div>
+</mat-toolbar>
+
+<app-subscription-alert
+  *ngIf="showRenewalAlert && currentSubscription"
+  [subscription]="currentSubscription">
+</app-subscription-alert>
